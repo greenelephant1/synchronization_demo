@@ -5,11 +5,24 @@
     <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
     <meta content="utf-8" http-equiv="encoding">
     <script type = "text/javascript" src = "jquery-2.1.4.min.js"></script>
+    <script type="text/javascript" src="animation.js"></script>
     <script type="text/javascript" src="application.js"></script>
     <link rel="stylesheet" type="text/css" href="application.css">
 
   </head>
   <body>
-    <canvas id="canvas" width=600 height=400></canvas>
+    <div id="navigation">
+      <select>
+        <option value="none">None</option>
+        <option value="Peterson's Algorithm">Peterson</option>
+        <option value="Mutex Lock">Mutex</option>
+        <option value="Symophore">Symophore</option>
+      </select>
+      <button type="button" id="play_button">Play</button>
+    </div>
+    <canvas id="canvas" width=600 height=400 hidden></canvas>
+    <div id="title_page" width=600 height=400>
+      CS575 Productions
+    </div>
   </body>
 </html>
