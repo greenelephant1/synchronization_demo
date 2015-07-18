@@ -1,7 +1,7 @@
 function Animation (){
     var canvas = document.getElementById("canvas");
     var ctx = canvas.getContext("2d");
-    var continue_demo = true;
+    var demo_finished = false;
 
     var fps = 60;
     var radius = 20;
@@ -61,9 +61,11 @@ function Animation (){
             }
         }
 
-        continue_demo = continue_demo && active_processes;
+        if (!active_processes){
+            demo_finished = true;
+        }
 
-        if (continue_demo){
+        if (!demo_finished){
             setTimeout(function () {
                 requestAnimationFrame(animate);
             }, 1000 / fps);
@@ -86,7 +88,7 @@ function Animation (){
 
         if(Math.abs(processes[0].x - processes[1].x) < radius
              && (processes[0].y - processes[1].y) < radius) {
-            continue_demo = false;
+            demo_finished = true;
             animateExplosion((processes[0].x + processes[1].x)/2, (processes[0].y + processes[1].y)/2);
         }
     }

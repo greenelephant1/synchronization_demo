@@ -1,14 +1,14 @@
 canvas, #title_page {
   border:1px solid black;
-  width:600px;
-  height:400px;
+  width:500px;
+  height:300px;
 }
 
 #title_page{
   text-align: center;
   vertical-align: middle;
-  line-height: 400px;
+  line-height: 300px;
   font: Ariel;
-  font-size: 60px;
+  font-size: 40px;
   color:blue;
 }
