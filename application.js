@@ -1,4 +1,6 @@
 $( document ).ready(function() {
+    var animation;
+
     $("#play_button").click(function() {
         algorithm_selection = $("#algorithm_dropdown").val();
 
@@ -17,5 +19,9 @@ $( document ).ready(function() {
         $("#canvas").show();
         animation = new Animation(algorithm);
         animation.animate();
+    });
+
+    $("#continue_button").click(function() {
+        animation.unpauseDemo();
     });
 });

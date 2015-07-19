@@ -2,6 +2,7 @@ function Animation (algorithm){
     var canvas = document.getElementById("canvas");
     var ctx = canvas.getContext("2d");
     var demo_finished = false;
+    var demo_paused = false;
 
     var fps = 60;
     var radius = 20;
@@ -54,7 +55,14 @@ function Animation (algorithm){
 
         for (var index = 0; index < processes.length; index++) {
             var process = processes[index];
-            process.iterate();
+
+            if(demo_paused){
+                active_processes = true;
+                break;
+
+            } else {
+                process.iterate();
+            }
 
             if (process.percent < 115) {
                 active_processes = true;
@@ -64,6 +72,7 @@ function Animation (algorithm){
         if (!active_processes){
             demo_finished = true;
         }
+
 
         if (!demo_finished){
             setTimeout(function () {
@@ -173,6 +182,10 @@ function Animation (algorithm){
             }
         }
 
+        this.pauseDemo = function() {
+            demo_paused = true;
+        }
+
         this.draw = function() {
             ctx.fillStyle = this.color;
             ctx.strokeStyle = "gray";
@@ -182,6 +195,11 @@ function Animation (algorithm){
             ctx.fill();
             ctx.stroke();
         };
+    }
+
+
+    this.unpauseDemo = function() {
+        demo_paused = false;
     }
 
     function animateExplosion(x, y){
