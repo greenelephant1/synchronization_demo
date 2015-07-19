@@ -1,14 +1,30 @@
 canvas, #title_page {
-  border:1px solid black;
-  width:500px;
-  height:300px;
+    border:1px solid black;
+    width:450px;
+    height:300px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 #title_page{
-  text-align: center;
-  vertical-align: middle;
-  line-height: 300px;
-  font: Ariel;
-  font-size: 40px;
-  color:blue;
+    text-align: center;
+    display: block;
+    vertical-align: middle;
+    line-height: 300px;
+    font: Ariel;
+    font-size: 40px;
+    color:blue;
+}
+
+#process_data_table{
+    margin-left: auto;
+    margin-right: auto;
+    width: 450px;
+    border-collapse: collapse;
+}
+
+#process_1_screen, #process_2_screen, #shared_data_screen {
+    border-style: solid;
+    width: 150px;
+    height: 300px;
 }

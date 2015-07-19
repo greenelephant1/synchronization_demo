@@ -1,4 +1,4 @@
-function Animation (){
+function Animation (algorithm){
     var canvas = document.getElementById("canvas");
     var ctx = canvas.getContext("2d");
     var demo_finished = false;
@@ -132,12 +132,31 @@ function Animation (){
         var color = params.color;
         var speed = params.speed;
         var track = params.track;
+        var this_process = this;
 
         this.iterate = function() {
+            if(isCritical()){
+                algorithm.critical_section_behavior.call(this_process);
+            } else {
+                this.moveForward();
+            }
+
+        };
+
+        this.moveForward = function() {
             this.percent = this.percent + direction * speed;
             this.x  = track.start_x + (track.end_x - track.start_x) * this.percent/100;
             this.y  = track.start_y + (track.end_y - track.start_y) * this.percent/100;
         };
+
+        function isCritical(){
+            if(this_process.x >= critical_section.start_x && this_process.x <= critical_section.end_x &&
+                this_process.y >= critical_section.start_y && this_process.y <= critical_section.end_y) {
+                return true;
+            } else {
+                return false;
+            }
+        }
 
         this.draw = function() {
             ctx.fillStyle = color;
