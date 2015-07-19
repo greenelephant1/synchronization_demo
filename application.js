@@ -1,6 +1,17 @@
 $( document ).ready(function() {
     $("#play_button").click(function() {
-        var algorithm = new NoneAlgorithm();
+        algorithm_selection = $("#algorithm_dropdown").val();
+
+        var algorithm;
+
+        switch(algorithm_selection) {
+            case 'peterson':
+                algorithm = new PetersonsAlgorithm();
+                break;
+            default:
+                algorithm = new NoneAlgorithm();
+        }
+
         $("#title_page").hide();
         $("#canvas").css('display', 'block' );
         $("#canvas").show();
