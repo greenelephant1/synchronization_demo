@@ -19,12 +19,28 @@ canvas, #title_page {
 #process_data_table{
     margin-left: auto;
     margin-right: auto;
-    width: 450px;
+    width: 750px;
     border-collapse: collapse;
 }
 
 #process_1_screen, #process_2_screen, #shared_data_screen {
     border-style: solid;
+}
+
+#shared_data_screen {
     width: 150px;
-    height: 300px;
+}
+
+#process_1_screen,  #process_2_screen {
+    width: 300px;
+}
+
+#petersons_flag_table{
+    border-collapse: collapse;
+    display: inline;
+}
+
+#petersons_flag_table td {
+    border-style: solid;
+    width:40px;
 }

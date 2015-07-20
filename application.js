@@ -17,11 +17,12 @@ $( document ).ready(function() {
         $("#title_page").hide();
         $("#canvas").css('display', 'block' );
         $("#canvas").show();
+
+        if (typeof animation !== 'undefined') {
+            animation.endDemo();
+        }
         animation = new Animation(algorithm);
         animation.animate();
     });
 
-    $("#continue_button").click(function() {
-        animation.unpauseDemo();
-    });
 });

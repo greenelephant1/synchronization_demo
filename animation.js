@@ -34,12 +34,12 @@ function Animation (algorithm){
 
     var processes = [];
     processes.push( new Process(
-           { percent: 0, direction: 1, color: 'blue', other_color:'green',  speed: 1, track: tracks[0] }
+           { percent: 0, direction: 1, color: 'blue', process_num: 1, speed: 1, track: tracks[0] }
         )
     );
 
     processes.push( new Process(
-           { percent: 0, direction: 1, color: 'green', other_color:'blue', speed: 1, track: tracks[1] }
+           { percent: 0, direction: 1, color: 'green', process_num: 2, speed: 1, track: tracks[1] }
         )
     );
 
@@ -58,8 +58,7 @@ function Animation (algorithm){
 
             if(demo_paused){
                 active_processes = true;
-                break;
-
+                break; //do not continue iterating processes if demo is paused
             } else {
                 process.iterate();
             }
@@ -139,7 +138,7 @@ function Animation (algorithm){
         this.percent = params.percent;
         var direction = params.direction;
         this.color = params.color;
-        this.other_color = params.other_color;
+        this.process_num = params.process_num;
         var speed = params.speed;
         var track = params.track;
         var this_process = this;
@@ -151,14 +150,14 @@ function Animation (algorithm){
                 if(right_of_way){ //process has already obtained the right of way
                     this.moveForward();
                 } else if (waiting){ // process already tried to enter crititcal section and did not get right of way
-                    right_of_way = algorithm.check_availablilty.call(this_process);
+                    right_of_way = algorithm.checkAvailablilty.call(this_process);
                 } else { //process is trying to enter critical section for the first time
-                    right_of_way = algorithm.enter_critical_section.call(this_process);
+                    right_of_way = algorithm.enterCriticalSection.call(this_process);
                     waiting = !right_of_way;
                 }
             } else {
                 if(right_of_way){ //process has just exited critical section
-                    algorithm.exit_critical_section.call(this_process);
+                    algorithm.exitCriticalSection.call(this_process);
                     right_of_way = false;
                 } else { //process has not entered critical section yet or is out of it
                     this.moveForward();
@@ -186,6 +185,15 @@ function Animation (algorithm){
             demo_paused = true;
         }
 
+        this.unpauseDemo = function() {
+            demo_paused = false;
+            $("#continue_button").hide();
+        }
+
+        this.showContinueButton = function() {
+            $("#continue_button").show();
+        }
+
         this.draw = function() {
             ctx.fillStyle = this.color;
             ctx.strokeStyle = "gray";
@@ -197,9 +205,8 @@ function Animation (algorithm){
         };
     }
 
-
-    this.unpauseDemo = function() {
-        demo_paused = false;
+    this.endDemo = function() {
+        demo_finished = true;
     }
 
     function animateExplosion(x, y){
