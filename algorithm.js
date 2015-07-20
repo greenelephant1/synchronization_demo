@@ -22,34 +22,16 @@ function PetersonsAlgorithm (){
 
     this.checkAvailablilty = function() {
         if(flag[this.other_color] && turn === this.other_color){
+            highlightCodeLine("#process_" + this.process_num + "_screen", 3);
+            highlightCodeLine("#process_" + this.process_num + "_screen", 4);
+            highlightCodeLine("#process_" + this.process_num + "_screen", 5);
+
             return false;
         } else {
+            highlightCodeLine("#process_" + this.process_num + "_screen", 6);
             return true;
         }
     };
-
-    this.checkAvailabliltyDisplay = function() {
-        highlightCodeLine("#process_" + this.process_num + "_screen", 3);
-        var this_process = this;
-
-        setContinueButton(function () {
-            this_algorithm.checkAvailabliltyDisplay2.call(this_process);
-        });
-    };
-
-    this.checkAvailabliltyDisplay2 = function() {
-        if(flag[this.other_color] && turn === this.other_color){
-            highlightCodeLine("#process_" + this.process_num + "_screen", 4);
-        } else {
-            highlightCodeLine("#process_" + this.process_num + "_screen", 6);
-        }
-
-        var this_process = this;
-
-        setContinueButton(function () {
-            this_process.unpauseDemo();
-        });
-    }
 
     this.enterCriticalSection = function() {
         this.pauseDemo();
@@ -58,49 +40,23 @@ function PetersonsAlgorithm (){
         flag[this.color] = true;
         turn = this.other_color;
 
-        var has_right_of_way = this_algorithm.checkAvailablilty.call(this)
-
-        this_algorithm.enterCriticalSectionDisplay.call(this);
-        return has_right_of_way;
-    };
-
-    this.enterCriticalSectionDisplay = function() {
         coloredOutput("#process_" + this.process_num + "_flag_val", "true", this.color);
         highlightCodeLine("#process_" + this.process_num + "_screen", 1);
 
-        var this_process = this;
-
-        setContinueButton(function () {
-            this_algorithm.enterCriticalSectionDisplay2.call(this_process);
-        });
-    }
-
-    this.enterCriticalSectionDisplay2 = function() {
         coloredOutput("#turn_val", this.other_color, this.color);
         highlightCodeLine("#process_" + this.process_num + "_screen", 2);
 
-        var this_process = this;
-
-        setContinueButton(function () {
-            this_algorithm.checkAvailabliltyDisplay.call(this_process);
-        });
-    }
-
-    this.exitCriticalSection = function() {
-        flag[this.color] = false;
-        this.pauseDemo();
-        this_algorithm.exitCriticalSectionDisplay.call(this);
+        return this_algorithm.checkAvailablilty.call(this);
     };
 
-    this.exitCriticalSectionDisplay = function() {
+
+    this.exitCriticalSection = function() {
+        this.pauseDemo();
+
+        flag[this.color] = false;
+
         highlightCodeLine("#process_" + this.process_num + "_screen", 7);
         coloredOutput("#process_" + this.process_num + "_flag_val", "false", this.color);
-
-        var this_process = this;
-
-        setContinueButton(function () {
-            this_process.unpauseDemo();
-        });
     };
 
     function otherColor(this_color){
@@ -153,15 +109,7 @@ function coloredOutput (selector, html_content, color){
 }
 
 function highlightCodeLine(parent_container, line){
-    $(parent_container + " div").css("background-color", 'white');
     $(parent_container + " div:nth-child(" + line +')').css("background-color", 'yellow');
-}
-
-function setContinueButton(behavior) {
-    $("#continue_button").show();
-    $("#continue_button").click(function() {
-        behavior();
-    });
 }
 
 

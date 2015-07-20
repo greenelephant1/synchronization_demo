@@ -182,16 +182,8 @@ function Animation (algorithm){
         }
 
         this.pauseDemo = function() {
-            demo_paused = true;
-        }
-
-        this.unpauseDemo = function() {
-            demo_paused = false;
-            $("#continue_button").hide();
-        }
-
-        this.showContinueButton = function() {
             $("#continue_button").show();
+            demo_paused = true;
         }
 
         this.draw = function() {
@@ -205,8 +197,19 @@ function Animation (algorithm){
         };
     }
 
+    this.pauseDemo = function() {
+        $("#continue_button").show();
+        demo_paused = true;
+    }
+
+
     this.endDemo = function() {
         demo_finished = true;
+    }
+
+    this.unpauseDemo = function() {
+        $("#continue_button").hide();
+        demo_paused = false;
     }
 
     function animateExplosion(x, y){
