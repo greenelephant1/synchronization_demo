@@ -26,7 +26,6 @@ $( document ).ready(function() {
     });
 
     $("#continue_button").click(function() {
-        $('#process_1_screen div, #process_2_screen div').css("background-color", 'white');
         animation.unpauseDemo();
     });
 });

@@ -2,7 +2,11 @@ function Animation (algorithm){
     var canvas = document.getElementById("canvas");
     var ctx = canvas.getContext("2d");
     var demo_finished = false;
-    var demo_paused = false;
+    var demo_paused = algorithm.start_paused;
+
+    if(demo_paused){
+        $("#continue_button").show();
+    }
 
     var fps = 60;
     var radius = 20;

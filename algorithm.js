@@ -1,4 +1,6 @@
 function NoneAlgorithm (){
+    this.start_paused = false;
+
     $("#process_data_table").hide();
 
     this.enterCriticalSection = function() {
@@ -17,18 +19,27 @@ function PetersonsAlgorithm (){
     var flag = new Object();
     var turn;
     var this_algorithm = this;
+    this.start_paused = true;
 
     setupDisplay();
 
     this.checkAvailablilty = function() {
+
         if(flag[this.other_color] && turn === this.other_color){
-            highlightCodeLine("#process_" + this.process_num + "_screen", 3);
-            highlightCodeLine("#process_" + this.process_num + "_screen", 4);
-            highlightCodeLine("#process_" + this.process_num + "_screen", 5);
+            highlightCodeLines("#process_" + this.process_num + "_screen", [3, 4, 5]);
+
+            if(this.state != 'paused'){
+                this.state = 'paused';
+                this.pauseDemo();
+            }
 
             return false;
         } else {
-            highlightCodeLine("#process_" + this.process_num + "_screen", 6);
+            highlightCodeLines("#process_" + this.process_num + "_screen", [6]);
+            if(this.state != 'has_right_of_way'){
+                this.state = 'has_right_of_way';
+                this.pauseDemo();
+            }
             return true;
         }
     };
@@ -41,10 +52,9 @@ function PetersonsAlgorithm (){
         turn = this.other_color;
 
         coloredOutput("#process_" + this.process_num + "_flag_val", "true", this.color);
-        highlightCodeLine("#process_" + this.process_num + "_screen", 1);
 
         coloredOutput("#turn_val", this.other_color, this.color);
-        highlightCodeLine("#process_" + this.process_num + "_screen", 2);
+        highlightCodeLines("#process_" + this.process_num + "_screen", [1, 2]);
 
         return this_algorithm.checkAvailablilty.call(this);
     };
@@ -55,7 +65,7 @@ function PetersonsAlgorithm (){
 
         flag[this.color] = false;
 
-        highlightCodeLine("#process_" + this.process_num + "_screen", 7);
+        highlightCodeLines("#process_" + this.process_num + "_screen", [7]);
         coloredOutput("#process_" + this.process_num + "_flag_val", "false", this.color);
     };
 
@@ -108,8 +118,12 @@ function coloredOutput (selector, html_content, color){
     $(selector).css("color", color);
 }
 
-function highlightCodeLine(parent_container, line){
-    $(parent_container + " div:nth-child(" + line +')').css("background-color", 'yellow');
+function highlightCodeLines(parent_container, lines){
+    $(parent_container + " div").css("background-color", 'white');
+
+    for (var i = 0; i < lines.length; i++) {
+        $(parent_container + " div:nth-child(" + lines[i] +')').css("background-color", 'yellow');
+    }
 }
 
 
