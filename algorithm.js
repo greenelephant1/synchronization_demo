@@ -123,35 +123,58 @@ function PetersonsAlgorithm (){
 
 
 function MutexAlgorithm (){
-    var flag = new Object();
-    var turn;
+
+    //Since (1) the processes in this demo move in a loop and not truly concurrently and
+    // (2) only one process is blocked at a time because therevare only two processes
+    //the "mutex lock" below does not need a mechanism to ensure that operations on 'available' are performed atomically
+    //like a real mutex lock in an os would
+
+    function mutex (){
+        var this_mutex = this;
+
+        var  available = true;
+
+        this.aquire = function(process) {
+            if(!available){
+                setTimeout(function () {
+                    this_mutex.aquire(process);
+                }, 1000);
+            } else {
+                process.right_of_way_aquired = true;
+                available = false;
+            }
+        }
+
+        this.release = function() {
+            available = true;
+        }
+    };
+
     var this_algorithm = this;
+
     this.start_paused = true;
 
     setupDisplay();
 
-    this.checkAvailablilty = function() {
-    };
+    mutex = new mutex();
 
     this.enterCriticalSection = function() {
+        this.right_of_way_aquired = false;
 
+        mutex.aquire(this);
+
+        return this.right_of_way_aquired;
     };
 
+    this.checkAvailablilty = function() {
+        return this.right_of_way_aquired;
+    };
 
     this.exitCriticalSection = function() {
-
+        mutex.release();
     };
 
-    function otherColor(this_color){
-
-    }
-
     function setupDisplay() {
-
-
-        function processCodeHtml(this_process_color, other_process_color){
-
-        }
     }
 }
 
