@@ -10,6 +10,9 @@ $( document ).ready(function() {
             case 'peterson':
                 algorithm = new PetersonsAlgorithm();
                 break;
+            case 'mutex':
+                algorithm = new MutexAlgorithm();
+                break;
             default:
                 algorithm = new NoneAlgorithm();
         }

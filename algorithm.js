@@ -23,10 +23,13 @@ function PetersonsAlgorithm (){
 
     setupDisplay();
 
+    highlightCodeLines("#process_1_screen", [1]);
+    highlightCodeLines("#process_2_screen", [1]);
+
     this.checkAvailablilty = function() {
 
         if(flag[this.other_color] && turn === this.other_color){
-            highlightCodeLines("#process_" + this.process_num + "_screen", [3, 4, 5]);
+            highlightCodeLines(this.process_screen_identifier, [5, 6, 7]);
 
             if(this.state != 'paused'){
                 this.state = 'paused';
@@ -35,7 +38,7 @@ function PetersonsAlgorithm (){
 
             return false;
         } else {
-            highlightCodeLines("#process_" + this.process_num + "_screen", [6]);
+            highlightCodeLines(this.process_screen_identifier, [8]);
             if(this.state != 'has_right_of_way'){
                 this.state = 'has_right_of_way';
                 this.pauseDemo();
@@ -47,14 +50,15 @@ function PetersonsAlgorithm (){
     this.enterCriticalSection = function() {
         this.pauseDemo();
 
-        this.other_color = otherColor(this.color)
+        this.other_color = otherColor(this.color);
+        this.process_screen_identifier = "#process_" + this.process_num + "_screen";
         flag[this.color] = true;
         turn = this.other_color;
 
         coloredOutput("#process_" + this.process_num + "_flag_val", "true", this.color);
 
         coloredOutput("#turn_val", this.other_color, this.color);
-        highlightCodeLines("#process_" + this.process_num + "_screen", [1, 2]);
+        highlightCodeLines(this.process_screen_identifier, [3, 4]);
 
         return this_algorithm.checkAvailablilty.call(this);
     };
@@ -65,7 +69,7 @@ function PetersonsAlgorithm (){
 
         flag[this.color] = false;
 
-        highlightCodeLines("#process_" + this.process_num + "_screen", [7]);
+        highlightCodeLines(this.process_screen_identifier, [11]);
         coloredOutput("#process_" + this.process_num + "_flag_val", "false", this.color);
     };
 
@@ -102,16 +106,56 @@ function PetersonsAlgorithm (){
         $("#process_data_table").show();
 
         function processCodeHtml(this_process_color, other_process_color){
-            return "<div>flag['" + this_process_color + "'] = true; </div>" +
+            return "<div>EXECUTE SAFE SECTION</div>" +
+                "<div>//approach critical section</div>" +
+                "<div>flag['" + this_process_color + "'] = true; </div>" +
                 "<div>turn = '" + other_process_color +"'; </div>" +
                 "<div>while ( flag['" + other_process_color + "'] && turn == " +  other_process_color + ") { </div>" +
                 "<div class='wait'>&nbsp;&nbsp;&nbsp;&nbsp;WAIT</div>" +
                 "<div>}</div>" +
                 "<div>CRITICAL SECTION</div>" +
-                "<div>flag['" + this_process_color + "'] = false; </div>"
+                "<div>//exit critical section</div>" +
+                "<div>flag['" + this_process_color + "'] = false; </div>" +
+                "<div>EXECUTE SAFE SECTION</div>"
         }
     }
 }
+
+
+function MutexAlgorithm (){
+    var flag = new Object();
+    var turn;
+    var this_algorithm = this;
+    this.start_paused = true;
+
+    setupDisplay();
+
+    this.checkAvailablilty = function() {
+    };
+
+    this.enterCriticalSection = function() {
+
+    };
+
+
+    this.exitCriticalSection = function() {
+
+    };
+
+    function otherColor(this_color){
+
+    }
+
+    function setupDisplay() {
+
+
+        function processCodeHtml(this_process_color, other_process_color){
+
+        }
+    }
+}
+
+
 
 function coloredOutput (selector, html_content, color){
     $(selector).html(html_content);

@@ -48,13 +48,18 @@ function Animation (algorithm){
     );
 
     this.animate = function() {
-      animate();
+        //Draw processes in animation (so there are processes visible when the animation is started paused)
+        for (var index = 0; index < processes.length; index++) {
+            var process = processes[index];
+            process.iterate();
+        }
+
+        animate();
     };
 
 
     function animate() {
         var active_processes = false;
-
         draw();
 
         for (var index = 0; index < processes.length; index++) {
@@ -67,7 +72,7 @@ function Animation (algorithm){
                 process.iterate();
             }
 
-            if (process.percent < 115) {
+            if (process.percent < 100) {
                 active_processes = true;
             }
         }
@@ -98,8 +103,9 @@ function Animation (algorithm){
             process.draw();
         }
 
-        if(Math.abs(processes[0].x - processes[1].x) < radius
-             && (processes[0].y - processes[1].y) < radius) {
+        if(Math.abs(processes[0].x - processes[1].x) < radius &&
+            Math.abs(processes[0].y - processes[1].y) < radius) {
+
             demo_finished = true;
             animateExplosion((processes[0].x + processes[1].x)/2, (processes[0].y + processes[1].y)/2);
         }
@@ -171,14 +177,18 @@ function Animation (algorithm){
         };
 
         this.moveForward = function() {
-            this.percent = this.percent + direction * speed;
-            this.x  = track.start_x + (track.end_x - track.start_x) * this.percent/100;
-            this.y  = track.start_y + (track.end_y - track.start_y) * this.percent/100;
+            if (this.percent < 100) {
+                this.percent = this.percent + direction * speed;
+                this.x  = track.start_x + (track.end_x - track.start_x) * this.percent/100;
+                this.y  = track.start_y + (track.end_y - track.start_y) * this.percent/100;
+            }
         };
 
         function isCritical(){
-            if(this_process.x >= critical_section.start_x && this_process.x <= critical_section.end_x &&
-                this_process.y >= critical_section.start_y && this_process.y <= critical_section.end_y) {
+            if(this_process.x >= critical_section.start_x - radius &&
+                this_process.x <= critical_section.end_x + radius &&
+                this_process.y >= critical_section.start_y - radius &&
+                this_process.y <= critical_section.end_y + radius) {
                 return true;
             } else {
                 return false;
