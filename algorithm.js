@@ -23,9 +23,6 @@ function PetersonsAlgorithm (){
 
     setupDisplay();
 
-    highlightCodeLines("#process_1_screen", [1]);
-    highlightCodeLines("#process_2_screen", [1]);
-
     this.checkAvailablilty = function() {
 
         if(flag[this.other_color] && turn === this.other_color){
@@ -105,18 +102,22 @@ function PetersonsAlgorithm (){
         $("#process_data_table").css('display', 'block' );
         $("#process_data_table").show();
 
+        highlightCodeLines("#process_1_screen", [1]);
+        highlightCodeLines("#process_2_screen", [1]);
+
+
         function processCodeHtml(this_process_color, other_process_color){
-            return "<div>EXECUTE SAFE SECTION</div>" +
+            return "<div>SAFE SECTION</div>" +
                 "<div>//approach critical section</div>" +
                 "<div>flag['" + this_process_color + "'] = true; </div>" +
                 "<div>turn = '" + other_process_color +"'; </div>" +
                 "<div>while ( flag['" + other_process_color + "'] && turn == " +  other_process_color + ") { </div>" +
-                "<div class='wait'>&nbsp;&nbsp;&nbsp;&nbsp;WAIT</div>" +
+                "<div class='wait indent1'>WAIT</div>" +
                 "<div>}</div>" +
                 "<div>CRITICAL SECTION</div>" +
                 "<div>//exit critical section</div>" +
                 "<div>flag['" + this_process_color + "'] = false; </div>" +
-                "<div>EXECUTE SAFE SECTION</div>"
+                "<div>SAFE SECTION</div>"
         }
     }
 }
@@ -160,21 +161,92 @@ function MutexAlgorithm (){
 
     this.enterCriticalSection = function() {
         this.right_of_way_aquired = false;
+        this.process_screen_identifier = "#process_" + this.process_num + "_screen";
+
+        this.pauseDemo();
 
         mutex.aquire(this);
 
-        return this.right_of_way_aquired;
+        var got_right_of_way  =  this.right_of_way_aquired;
+        if(got_right_of_way){
+            highlightCodeLines( this.process_screen_identifier, [3, 4]);
+            coloredOutput("#mutex_available", "false", this.color);
+            coloredOutput("#mutex_process_" + this.process_num + "_status", this.color + " aquired lock", this.color);
+
+        } else {
+            highlightCodeLines( this.process_screen_identifier, [3]);
+            coloredOutput("#mutex_process_" + this.process_num + "_status", this.color + " is spin waiting", this.color);
+        }
+
+        return got_right_of_way;
     };
 
     this.checkAvailablilty = function() {
+        var got_right_of_way = this.right_of_way_aquired;
+
+        if(got_right_of_way){
+            highlightCodeLines( this.process_screen_identifier, [4]);
+            coloredOutput("#mutex_process_" + this.process_num + "_status", this.color + " aquired lock", this.color);
+
+        } else {
+            highlightCodeLines( this.process_screen_identifier, [3]);
+            coloredOutput("#mutex_process_" + this.process_num + "_status", this.color + " is spin waiting", this.color);
+        }
+
         return this.right_of_way_aquired;
     };
 
     this.exitCriticalSection = function() {
         mutex.release();
+        this.pauseDemo();
+        highlightCodeLines(this.process_screen_identifier, [7]);
+        coloredOutput("#mutex_available", "true", this.color);
+        coloredOutput("#mutex_process_" + this.process_num + "_status", this.color + " released lock", this.color);
     };
 
     function setupDisplay() {
+
+        $("#shared_data_screen").html(
+            "<div>mutex.availabale = <span id='mutex_available'>true</span></div>" +
+            "<div id='mutex_process_1_status'></div>" +
+            "<div id='mutex_process_2_status'></div>"
+        );
+
+        $("#process_1_screen, #process_2_screen").html(
+            "<div>SAFE SECTION</div>" +
+            "<div>//approach critical section</div>" +
+            "<div>mutex.aquire();</div>" +
+            "<div>CRITICAL SECTION</div>" +
+            "<div>//exit critical section</div>" +
+            "<div>mutex.release();</div>" +
+            "<div>SAFE SECTION</div>"
+
+        );
+
+        $("#process_data_table").show();
+
+        $("#shared_definition").html(
+            "<div>class Mutex() {</div>" +
+            "<div class='indent1'>bool available = false;</div>" +
+            "<br>" +
+            "<div class='indent1'>aquire() {</div>" +
+            "<div class='indent2'>while(!available) {</div>" +
+            "<div class='indent3'>BUSY WAIT</div>" +
+            "<div class='indent2'>}</div>" +
+            "<div class='indent2'>available = false; </div>" +
+            "<div class='indent1'>} </div>" +
+            "<br>" +
+            "<div class='indent1'>release() {</div>" +
+            "<div class='indent2'>available = true; </div>" +
+            "<div class='indent1'>} </div>" +
+            "<div>}</div>"
+        );
+
+        $("#shared_definition").show();
+
+
+        highlightCodeLines("#process_1_screen", [1]);
+        highlightCodeLines("#process_2_screen", [1]);
     }
 }
 

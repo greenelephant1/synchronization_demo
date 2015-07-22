@@ -11,32 +11,38 @@
     <link rel="stylesheet" type="text/css" href="application.css">
   </head>
   <body>
-    <div id="navigation">
-      <select id="algorithm_dropdown">
-        <option value="none">None</option>
-        <option value="peterson">Peterson's Algorithm</option>
-        <option value="mutex">Mutex Lock</option>
-        <option value="symophore">Symophore</option>
-      </select>
-      <button type="button" id="play_button">Play</button>
-      <button type="button" id="continue_button" hidden>Continue</button>
-    </div>
-    <canvas id="canvas" width=600 height=400 hidden></canvas>
-    <table id="process_data_table" hidden>
-      <tr>
-        <th>Blue Process</th>
-        <th>Shared Data</th>
-        <th>Green Process</th>
-      </tr>
-      <tr>
-        <td id="process_1_screen"></td>
-        <td id="shared_data_screen"></td>
-        <td id="process_2_screen"></td>
-      </tr>
-    </table>
+    <div id= "main_content">
+      <div id="navigation">
+        <select id="algorithm_dropdown">
+          <option value="none">None</option>
+          <option value="peterson">Peterson's Algorithm</option>
+          <option value="mutex">Mutex Lock</option>
+          <option value="semophore">Semophore</option>
+        </select>
+        <button type="button" id="play_button">Play</button>
+        <button type="button" id="continue_button" hidden>Continue</button>
+      </div>
+      <canvas id="canvas" width=600 height=400 hidden></canvas>
+      <table id="process_data_table" hidden>
+        <tr>
+          <th>Blue Process</th>
+          <th>Shared Data</th>
+          <th>Green Process</th>
+        </tr>
+        <tr>
+          <td id="process_1_screen"></td>
+          <td id="shared_data_screen"></td>
+          <td id="process_2_screen"></td>
+        </tr>
+      </table>
 
-    <div id="title_page" width=600 height=400>
-      CS575 Productions
+      <div id="title_page">
+        CS575 Productions
+      </div>
+    </div>
+    <div id="right_sidebar">
+      <div id="shared_definition" hidden>
+      <div>
     </div>
   </body>
 </html>

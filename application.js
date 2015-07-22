@@ -2,7 +2,17 @@ $( document ).ready(function() {
     var animation;
 
     $("#play_button").click(function() {
+        $("#process_1_screen, #process_2_screen, #shared_data_screen").html('');
+
+        if (typeof animation !== 'undefined') {
+            animation.endDemo();
+        }
+
         algorithm_selection = $("#algorithm_dropdown").val();
+
+        $("#continue_button").hide();
+        $("#shared_definition").text('');
+        $("#shared_definition").hide();
 
         var algorithm;
 
@@ -21,9 +31,7 @@ $( document ).ready(function() {
         $("#canvas").css('display', 'block' );
         $("#canvas").show();
 
-        if (typeof animation !== 'undefined') {
-            animation.endDemo();
-        }
+
         animation = new Animation(algorithm);
         animation.animate();
     });
