@@ -161,6 +161,7 @@ function MutexAlgorithm (){
 
     this.enterCriticalSection = function() {
         this.right_of_way_aquired = false;
+        this.already_had_right_of_way = false;
         this.process_screen_identifier = "#process_" + this.process_num + "_screen";
 
         this.pauseDemo();
@@ -187,7 +188,10 @@ function MutexAlgorithm (){
         if(got_right_of_way){
             highlightCodeLines( this.process_screen_identifier, [4]);
             coloredOutput("#mutex_process_" + this.process_num + "_status", this.color + " aquired lock", this.color);
-
+            if (!this.already_had_right_of_way){
+                this.pauseDemo();
+                this.already_had_right_of_way = true;
+            }
         } else {
             highlightCodeLines( this.process_screen_identifier, [3]);
             coloredOutput("#mutex_process_" + this.process_num + "_status", this.color + " is spin waiting", this.color);
@@ -275,33 +279,103 @@ function SemaphoreAlgorithm (){
     setupDisplay();
 
     this.enterCriticalSection = function() {
+        this.pauseDemo();
+
         this.right_of_way_aquired = false;
+        this.already_had_right_of_way = false;
+        this.process_screen_identifier = "#process_" + this.process_num + "_screen";
         wait(this);
 
         var got_right_of_way  =  this.right_of_way_aquired;
+
+        if(got_right_of_way){
+            highlightCodeLines( this.process_screen_identifier, [3, 4]);
+            coloredOutput("#semaphore_val", "0", this.color);
+            coloredOutput("#semaphore_process_" + this.process_num + "_status",
+                this.color + " finished waiting", this.color);
+
+        } else {
+            highlightCodeLines( this.process_screen_identifier, [3]);
+            coloredOutput("#semaphore_process_" + this.process_num + "_status",
+                this.color + " is spin waiting", this.color);
+        }
+
         return got_right_of_way;
 
     };
 
     this.checkAvailablilty = function() {
+        got_right_of_way =  this.right_of_way_aquired;
+
+        if(got_right_of_way){
+            highlightCodeLines( this.process_screen_identifier, [4]);
+            coloredOutput("#semaphore_val", "0", this.color);
+
+            coloredOutput("#semaphore_process_" + this.process_num + "_status",
+                this.color + " finished waiting", this.color);
+
+            if (!this.already_had_right_of_way){
+                this.pauseDemo();
+                this.already_had_right_of_way = true;
+            }
+
+        } else {
+            highlightCodeLines( this.process_screen_identifier, [3]);
+            coloredOutput("#semaphore_process_" + this.process_num + "_status",
+                this.color + " is spin waiting", this.color);
+        }
+
         return this.right_of_way_aquired;
     };
 
     this.exitCriticalSection = function() {
         signal();
+        this.pauseDemo();
+        highlightCodeLines(this.process_screen_identifier, [7]);
+        coloredOutput("#semaphore_val", 1, this.color);
+        coloredOutput("#semaphore_process_" + this.process_num + "_status", this.color + " finished signaling", this.color);
     };
 
     function setupDisplay() {
 
+        $("#shared_definition").html(
+            "<div>wait(Semaphore) {</div>" +
+            "<div class='indent1'>while( Semaphore <= 0 ) {</div>" +
+            "<div class='indent2'>BUSY WAIT</div>" +
+            "<div class='indent1'>}</div>" +
+            "<div class='indent1'>Semaphore--;</div>" +
+            "<div>}</div>" +
+            "<br>" +
+            "<div>signal(Semaphore) {</div>" +
+            "<div class='indent1'>Semaphore++;</div>" +
+            "<div>}</div>"
+        )
+
         $("#shared_definition").show();
+
+
+        $("#shared_data_screen").html(
+            "<div>Semaphore.val() = <span id='semaphore_val'>1</span></div>"+
+            "<div id='semaphore_process_1_status'></div>" +
+            "<div id='semaphore_process_2_status'></div>"
+        );
+
+        $("#process_1_screen, #process_2_screen").html(
+            "<div>SAFE SECTION</div>" +
+            "<div>//approach critical section</div>" +
+            "<div>wait(Semaphore);</div>" +
+            "<div>CRITICAL SECTION</div>" +
+            "<div>//exit critical section</div>" +
+            "<div>signal(Semaphore);</div>" +
+            "<div>SAFE SECTION</div>"
+        );
+
         $("#process_data_table").show();
 
         highlightCodeLines("#process_1_screen", [1]);
         highlightCodeLines("#process_2_screen", [1]);
     }
 }
-
-
 
 
 function coloredOutput (selector, html_content, color){
