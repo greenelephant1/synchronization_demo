@@ -126,7 +126,7 @@ function PetersonsAlgorithm (){
 function MutexAlgorithm (){
 
     //Since (1) the processes in this demo move in a loop and not truly concurrently and
-    // (2) only one process is blocked at a time because therevare only two processes
+    // (2) only one process is blocked at a time because there are only two processes
     //the "mutex lock" below does not need a mechanism to ensure that operations on 'available' are performed atomically
     //like a real mutex lock in an os would
 
@@ -249,6 +249,58 @@ function MutexAlgorithm (){
         highlightCodeLines("#process_2_screen", [1]);
     }
 }
+
+function SemaphoreAlgorithm (){
+
+    //As in the MutexAlgorithm, we don't enforce that operations are performed  atomically becouse the processes in
+    //the demo aren't truly concurrent
+    var semaphore = 1;
+
+    function wait(process){
+        if (semaphore <= 0){
+            setTimeout(function () {
+                wait(process);
+            }, 1000);
+        } else {
+            semaphore--;
+            process.right_of_way_aquired = true;
+        }
+
+    }
+
+    function signal(){
+        semaphore++;
+    }
+
+    setupDisplay();
+
+    this.enterCriticalSection = function() {
+        this.right_of_way_aquired = false;
+        wait(this);
+
+        var got_right_of_way  =  this.right_of_way_aquired;
+        return got_right_of_way;
+
+    };
+
+    this.checkAvailablilty = function() {
+        return this.right_of_way_aquired;
+    };
+
+    this.exitCriticalSection = function() {
+        signal();
+    };
+
+    function setupDisplay() {
+
+        $("#shared_definition").show();
+        $("#process_data_table").show();
+
+        highlightCodeLines("#process_1_screen", [1]);
+        highlightCodeLines("#process_2_screen", [1]);
+    }
+}
+
 
 
 

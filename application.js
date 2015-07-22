@@ -23,6 +23,9 @@ $( document ).ready(function() {
             case 'mutex':
                 algorithm = new MutexAlgorithm();
                 break;
+            case 'semaphore':
+                algorithm = new SemaphoreAlgorithm();
+                break;
             default:
                 algorithm = new NoneAlgorithm();
         }
