@@ -80,19 +80,20 @@ function PetersonsAlgorithm (){
 
     function setupDisplay() {
         $("#shared_data_screen").html(
-            "flag =  <table id='petersons_flag_table'> \n\
-              <tr> \n\
-                <th>blue</td> \n\
-                <th>green</td> \n\
-              </tr> \n\
-              <tr> \n\
-                <td><span id='process_1_flag_val'>false</span></td> \n\
-                <td><span id='process_2_flag_val'>false</span></td> \n\
-              </tr> \n\
-            </table> \n\
-            </br> \n\
-            </br> \n\
-            turn = <span id='turn_val'>nil<span>"
+            "<div>flag = <table id='petersons_flag_table'>" +
+            "<tr>" +
+            "<th>blue</td>" +
+            "<th>green</td>" +
+            "</tr>" +
+            "<tr>" +
+            "<td><span id='process_1_flag_val'>false</span></td>" +
+            "<td><span id='process_2_flag_val'>false</span></td>" +
+            "</tr>" +
+            "</div>" +
+            "</table>" +
+            "</br>" +
+            "</br>" +
+            "<div>turn = <span id='turn_val'>nil<span></div>"
         );
 
         $("#process_1_screen").html(processCodeHtml('blue', 'green'));
@@ -246,7 +247,9 @@ function MutexAlgorithm (){
             "<div>}</div>"
         );
 
-        $("#shared_definition").show();
+        $("#shared_definition_title").html("Mutex Definition");
+
+        $("#shared_definition_table").show();
 
 
         highlightCodeLines("#process_1_screen", [1]);
@@ -259,6 +262,8 @@ function SemaphoreAlgorithm (){
     //As in the MutexAlgorithm, we don't enforce that operations are performed  atomically becouse the processes in
     //the demo aren't truly concurrent
     var semaphore = 1;
+    this.start_paused = true;
+
 
     function wait(process){
         if (semaphore <= 0){
@@ -351,7 +356,9 @@ function SemaphoreAlgorithm (){
             "<div>}</div>"
         )
 
-        $("#shared_definition").show();
+        $("#shared_definition_title").html("Semaphore Definition");
+
+        $("#shared_definition_table").show();
 
 
         $("#shared_data_screen").html(

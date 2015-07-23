@@ -11,8 +11,8 @@ $( document ).ready(function() {
         algorithm_selection = $("#algorithm_dropdown").val();
 
         $("#continue_button").hide();
-        $("#shared_definition").text('');
-        $("#shared_definition").hide();
+        $("#shared_definition, #shared_definition_title").text('');
+        $("#shared_definition_table").hide();
 
         var algorithm;
 
