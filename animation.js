@@ -8,6 +8,7 @@ function Animation (algorithm){
         $("#continue_button").show();
     }
 
+
     var fps = 60;
     var radius = 20;
 

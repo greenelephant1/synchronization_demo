@@ -30,6 +30,12 @@ $( document ).ready(function() {
                 algorithm = new NoneAlgorithm();
         }
 
+        if(algorithm.centered_canvas){
+            $("canvas").css("margin-left", "225px");
+        } else {
+            $("canvas").css("margin-left", "10px");
+        }
+
         $("#title_page").hide();
         $("#canvas").css('display', 'block' );
         $("#canvas").show();

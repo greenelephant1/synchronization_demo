@@ -1,29 +1,37 @@
-canvas, #title_page {
-    border:1px solid black;
-    width:450px;
+#title_page, canvas {
+    width: 450px;
     height:300px;
-    margin-left: auto;
-    margin-right: auto;
+    border:2px solid black;
+}
+
+canvas {
+    float:left;
+    margin: 10px;
+    margin-right: 50px;
 }
 
 #title_page{
     text-align: center;
-    display: block;
     vertical-align: middle;
     line-height: 300px;
     font: Ariel;
     font-size: 40px;
     color:blue;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 #shared_definition_table, #process_data_table {
-    margin-left: auto;
-    margin-right: auto;
     border-collapse: collapse;
 }
 
+#navigation { margin: 10px;}
+
 #process_data_table {
+    clear:both;
     width: 900px;
+    margin: 10px;
 }
 
 #process_1_screen, #process_2_screen, #shared_data_screen, #shared_definition {
@@ -54,21 +62,6 @@ canvas, #title_page {
 #petersons_flag_table td{
     border-style: solid;
     width: 40px;
-}
-
-#main_content {
-    float: left;
-    width: 70%;
-}
-
-
-#right_sidebar {
-    float: left;
-    width: 30%;
-}
-
-#shared_definition_table{
-    float:left;
 }
 
 #shared_definition {

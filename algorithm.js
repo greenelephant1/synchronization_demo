@@ -1,5 +1,6 @@
 function NoneAlgorithm (){
     this.start_paused = false;
+    this.centered_canvas = true;
 
     $("#process_data_table").hide();
 
@@ -19,6 +20,9 @@ function PetersonsAlgorithm (){
     var flag = new Object();
     var turn;
     var this_algorithm = this;
+
+    this.centered_canvas = true;
+
     this.start_paused = true;
 
     setupDisplay();
@@ -133,6 +137,8 @@ function MutexAlgorithm (){
 
     function mutex (){
         var this_mutex = this;
+        this.centered_canvas = false;
+
 
         var  available = true;
 
@@ -258,12 +264,12 @@ function MutexAlgorithm (){
 }
 
 function SemaphoreAlgorithm (){
+    this.start_paused = true;
+    this.centered_canvas = false;
 
     //As in the MutexAlgorithm, we don't enforce that operations are performed  atomically becouse the processes in
     //the demo aren't truly concurrent
     var semaphore = 1;
-    this.start_paused = true;
-
 
     function wait(process){
         if (semaphore <= 0){

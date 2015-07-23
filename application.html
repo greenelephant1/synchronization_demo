@@ -9,6 +9,7 @@
     <script type="text/javascript" src="algorithm.js"></script>
     <script type="text/javascript" src="application.js"></script>
     <link rel="stylesheet" type="text/css" href="application.css">
+
   </head>
   <body>
     <div id= "main_content">
@@ -22,7 +23,17 @@
         <button type="button" id="play_button">Play</button>
         <button type="button" id="continue_button" hidden>Continue</button>
       </div>
-      <canvas id="canvas" width=600 height=400 hidden></canvas>
+      <div id="canvas_and_shared_definition">
+        <canvas id="canvas" width=600 height=400 hidden></canvas>
+        <table id="shared_definition_table" hidden>
+          <tr>
+            <th id="shared_definition_title"></th>
+          </tr>
+          <tr>
+            <td id="shared_definition"></td>
+          </tr>
+        </table>
+      </div>
       <br>
       <table id="process_data_table" hidden>
         <tr>
@@ -40,16 +51,6 @@
       <div id="title_page">
         CS575 Productions
       </div>
-    </div>
-    <div id="right_sidebar">
-      <table id="shared_definition_table" hidden>
-        <tr>
-          <th id="shared_definition_title"></th>
-        </tr>
-        <tr>
-          <td id="shared_definition"></td>
-        </tr>
-      </table>
     </div>
   </body>
 </html>
