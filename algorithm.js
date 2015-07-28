@@ -1,7 +1,7 @@
 function NoneAlgorithm (){
     this.start_paused = false;
-    this.centered_canvas = true;
 
+    $("canvas").css("margin-left", "225px");
     $("#process_data_table").hide();
 
     this.enterCriticalSection = function() {
@@ -20,8 +20,6 @@ function PetersonsAlgorithm (){
     var flag = new Object();
     var turn;
     var this_algorithm = this;
-
-    this.centered_canvas = true;
 
     this.start_paused = true;
 
@@ -57,7 +55,6 @@ function PetersonsAlgorithm (){
         turn = this.other_color;
 
         coloredOutput("#process_" + this.process_num + "_flag_val", "true", this.color);
-
         coloredOutput("#turn_val", this.other_color, this.color);
         highlightCodeLines(this.process_screen_identifier, [3, 4]);
 
@@ -83,6 +80,8 @@ function PetersonsAlgorithm (){
     }
 
     function setupDisplay() {
+        $("canvas").css("margin-left", "225px");
+
         $("#shared_data_screen").html(
             "<div>flag = <table id='petersons_flag_table'>" +
             "<tr>" +
@@ -137,8 +136,6 @@ function MutexAlgorithm (){
 
     function mutex (){
         var this_mutex = this;
-        this.centered_canvas = false;
-
 
         var  available = true;
 
@@ -171,8 +168,6 @@ function MutexAlgorithm (){
         this.already_had_right_of_way = false;
         this.process_screen_identifier = "#process_" + this.process_num + "_screen";
 
-        this.pauseDemo();
-
         mutex.aquire(this);
 
         var got_right_of_way  =  this.right_of_way_aquired;
@@ -186,6 +181,8 @@ function MutexAlgorithm (){
             coloredOutput("#mutex_process_" + this.process_num + "_status", this.color + " is spin waiting", this.color);
         }
 
+        this.pauseDemo();
+
         return got_right_of_way;
     };
 
@@ -194,6 +191,7 @@ function MutexAlgorithm (){
 
         if(got_right_of_way){
             highlightCodeLines( this.process_screen_identifier, [4]);
+            coloredOutput("#mutex_available", "false", this.color);
             coloredOutput("#mutex_process_" + this.process_num + "_status", this.color + " aquired lock", this.color);
             if (!this.already_had_right_of_way){
                 this.pauseDemo();
@@ -216,6 +214,7 @@ function MutexAlgorithm (){
     };
 
     function setupDisplay() {
+        $("canvas").css("margin-left", "10px");
 
         $("#shared_data_screen").html(
             "<div>mutex.availabale = <span id='mutex_available'>true</span></div>" +
@@ -265,7 +264,6 @@ function MutexAlgorithm (){
 
 function SemaphoreAlgorithm (){
     this.start_paused = true;
-    this.centered_canvas = false;
 
     //As in the MutexAlgorithm, we don't enforce that operations are performed  atomically becouse the processes in
     //the demo aren't truly concurrent
@@ -316,7 +314,7 @@ function SemaphoreAlgorithm (){
     };
 
     this.checkAvailablilty = function() {
-        got_right_of_way =  this.right_of_way_aquired;
+        got_right_of_way = this.right_of_way_aquired;
 
         if(got_right_of_way){
             highlightCodeLines( this.process_screen_identifier, [4]);
@@ -348,6 +346,7 @@ function SemaphoreAlgorithm (){
     };
 
     function setupDisplay() {
+        $("canvas").css("margin-left", "10px");
 
         $("#shared_definition").html(
             "<div>wait(Semaphore) {</div>" +

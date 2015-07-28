@@ -4,7 +4,7 @@ $( document ).ready(function() {
     $("#play_button").click(function() {
         $("#process_1_screen, #process_2_screen, #shared_data_screen").html('');
 
-        if (typeof animation !== 'undefined') {
+        if (typeof animation !== 'undefined') { //if there is already an animation running, stop it
             animation.endDemo();
         }
 
@@ -30,14 +30,8 @@ $( document ).ready(function() {
                 algorithm = new NoneAlgorithm();
         }
 
-        if(algorithm.centered_canvas){
-            $("canvas").css("margin-left", "225px");
-        } else {
-            $("canvas").css("margin-left", "10px");
-        }
-
         $("#title_page").hide();
-        $("#canvas").css('display', 'block' );
+        $("#canvas").css('display', 'block');
         $("#canvas").show();
 
 
